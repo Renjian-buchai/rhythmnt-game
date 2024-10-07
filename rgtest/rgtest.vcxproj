@@ -118,7 +118,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>U:\repos\rgtest\External\bass24\c;U:\repos\rgtest\External\SDL2-2.30.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>U:\repos\rgtest\External\bass24\c;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <Optimization>Disabled</Optimization>
@@ -126,9 +126,15 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>U:\repos\rgtest\External\SDL2-2.30.8\lib\x64;U:\repos\rgtest\External\bass24\c\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;bass.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>U:\repos\rgtest\packages\sdl2.nuget.2.30.7\build\native\lib\x64;U:\repos\rgtest\packages\sdl2_ttf.nuget.2.22.0\build\native\lib\x64;U:\repos\rgtest\packages\BASS.2.4.12.1\build\native\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;bass.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy $(ProjectDir)Resources $(OutDir)</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copy resource files</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -152,8 +158,36 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
+    <ClInclude Include="resource2.h" />
+    <ClInclude Include="resource3.h" />
+    <ClInclude Include="resource4.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\FiraCode-Regular.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\sdl2.nuget.redist.2.30.7\build\native\sdl2.nuget.redist.targets" Condition="Exists('..\packages\sdl2.nuget.redist.2.30.7\build\native\sdl2.nuget.redist.targets')" />
+    <Import Project="..\packages\sdl2.nuget.2.30.7\build\native\sdl2.nuget.targets" Condition="Exists('..\packages\sdl2.nuget.2.30.7\build\native\sdl2.nuget.targets')" />
+    <Import Project="..\packages\BASS.redist.2.4.12.1\build\native\BASS.redist.targets" Condition="Exists('..\packages\BASS.redist.2.4.12.1\build\native\BASS.redist.targets')" />
+    <Import Project="..\packages\BASS.2.4.12.1\build\native\BASS.targets" Condition="Exists('..\packages\BASS.2.4.12.1\build\native\BASS.targets')" />
+    <Import Project="..\packages\sdl2_ttf.nuget.redist.2.22.0\build\native\sdl2_ttf.nuget.redist.targets" Condition="Exists('..\packages\sdl2_ttf.nuget.redist.2.22.0\build\native\sdl2_ttf.nuget.redist.targets')" />
+    <Import Project="..\packages\sdl2_ttf.nuget.2.22.0\build\native\sdl2_ttf.nuget.targets" Condition="Exists('..\packages\sdl2_ttf.nuget.2.22.0\build\native\sdl2_ttf.nuget.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\sdl2.nuget.redist.2.30.7\build\native\sdl2.nuget.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\sdl2.nuget.redist.2.30.7\build\native\sdl2.nuget.redist.targets'))" />
+    <Error Condition="!Exists('..\packages\sdl2.nuget.2.30.7\build\native\sdl2.nuget.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\sdl2.nuget.2.30.7\build\native\sdl2.nuget.targets'))" />
+    <Error Condition="!Exists('..\packages\BASS.redist.2.4.12.1\build\native\BASS.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\BASS.redist.2.4.12.1\build\native\BASS.redist.targets'))" />
+    <Error Condition="!Exists('..\packages\BASS.2.4.12.1\build\native\BASS.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\BASS.2.4.12.1\build\native\BASS.targets'))" />
+    <Error Condition="!Exists('..\packages\sdl2_ttf.nuget.redist.2.22.0\build\native\sdl2_ttf.nuget.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\sdl2_ttf.nuget.redist.2.22.0\build\native\sdl2_ttf.nuget.redist.targets'))" />
+    <Error Condition="!Exists('..\packages\sdl2_ttf.nuget.2.22.0\build\native\sdl2_ttf.nuget.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\sdl2_ttf.nuget.2.22.0\build\native\sdl2_ttf.nuget.targets'))" />
+  </Target>
 </Project>

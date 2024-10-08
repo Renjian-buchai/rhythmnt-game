@@ -45,7 +45,6 @@ void game::update() {
                            backgroundColour.a);
     SDL_RenderFillRect(mainWindowRenderer, &screen);
 
-
     for (uint8_t i = 0; i < 4; ++i) {
       SDL_SetRenderDrawColor(mainWindowRenderer, colours[i].r, colours[i].g,
                              colours[i].b, colours[i].a);

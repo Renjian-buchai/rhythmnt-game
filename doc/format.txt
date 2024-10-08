@@ -1,0 +1,46 @@
+Header 
+----------------------------
+version 
+Chart name  
+Composer 
+Illustrator 
+Charter   
+Alias 
+SongPath 
+Difficulty 
+Chart Constant 
+BPM 
+PreviewStart
+PreviewEnd
+AudioOffset
+----------------------------
+
+Chart
+----------------------------
+
+Note
+
+NoteType => 0 (2 bit) 
+Lane (2) 
+Time (64) 
+Total: 9 bytes 
+
+HoldNote 
+
+NoteType => 1 (2 bit) 
+Lane (2) 
+TimeStart (64)
+DeltaTime (64)
+Total 17 bytes
+
+TimingGroup
+NoteType => 2 (2 bit) 
+BPM (16 bit) 
+Timing (64) 
+
+MovementGroup
+NoteType => 2 (2 bit) 
+Lane (2) 
+Position (4 bits) 
+TimeStart (64) 
+DeltaTime (64) 

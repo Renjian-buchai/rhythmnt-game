@@ -13,12 +13,12 @@
 
 class game {
  public:
-  enum class gameState : uint8_t { SONGSELECT, GAMEPLAY, PAUSE };
+  enum class gameState : uint8_t { QUIT, SONGSELECT, GAMEPLAY, PAUSE };
 
-  // Game logic 
-  bool quit = false;
-  gameState state = gameState::SONGSELECT; 
-  
+  // Game logic
+  gameState state = gameState::GAMEPLAY;
+  uint8_t noteSpeed = 100; 
+
   // SDL rendering, event handling
   const SDL_Rect screen;
   SDL_Window* mainWindow = nullptr;
@@ -26,14 +26,14 @@ class game {
   std::vector<SDL_Texture*> textures{};
 
   // SDL fonts
-  TTF_Font* font = nullptr; 
-  
+  TTF_Font* font = nullptr;
+
   // Audio management
   std::vector<HSTREAM> bassStreams{};
 
   game(SDL_Rect screen);
   ~game();
 
-  void songSelect(); 
+  void songSelect();
   void update();
 };

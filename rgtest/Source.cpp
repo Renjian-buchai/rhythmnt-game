@@ -42,16 +42,25 @@ int main(int argc [[maybe_unused]], char** argv [[maybe_unused]]) {
 
   SDL_Renderer*& renderer = rg.mainWindowRenderer;
 
-  HSTREAM audioStream = BASS_StreamCreateFile(
-      false,
-      "C:/Users/tyiwe/Music/Arcaea Sound Collection - Memories of Serenity/"
-      "24 PRIMITIVE LIGHTS (Long Ver.).mp3",
-      0, 0, BASS_STREAM_PRESCAN);
+  while (true) {
+    switch (rg.state) {
+      case game::gameState::SONGSELECT: 
+        rg.songSelect();
+        break; 
 
-  BASS_ChannelPlay(audioStream, false);
+      case game::gameState::GAMEPLAY: 
+        rg.update();
+        break; 
 
-  while (!rg.quit) {
-    rg.update();
+      case game::gameState::PAUSE: 
+        break; 
+
+      case game::gameState::QUIT: 
+        exit(0); 
+
+      default: 
+        break;
+    }
   }
 
   return 0;

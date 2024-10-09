@@ -46,6 +46,8 @@ void game::update() {
       BASS_StreamCreateFile(0, "./Charts/test/test.ogg", 0, 0,
                             BASS_MUSIC_PRESCAN | BASS_MUSIC_AUTOFREE);
 
+  auto notes = parse("./Charts/test/test.sl");
+
   uint64_t timeStart = SDL_GetTicks64(), timeEnd;
   // If deltaTime is greater than this, we're fucked anyways
   uint16_t deltaTime;

@@ -1,6 +1,17 @@
 #include "chartParser.h"
 
+#include <algorithm>
+#include <iostream>
 #include <sstream>
+
+bool operator<(noteObject&& a, noteObject&& b) {
+  bool ret;
+  std::visit([&](auto&& thing1, 
+                 auto&& thing2) { ret = thing1.timing < thing2.timing; },
+             a, b);
+
+  return ret;
+}
 
 std::vector<noteObject> parse(std::string chartFile) {
   std::vector<noteObject> noteObjects;
@@ -73,6 +84,10 @@ std::vector<noteObject> parse(std::string chartFile) {
         break;
     }
   }
+
+  std::sort(noteObjects.begin(), noteObjects.end(),
+            [](noteObject& a, noteObject& b) { return a < b; });
+
   return noteObjects;
 }
 

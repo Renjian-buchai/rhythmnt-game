@@ -1,15 +1,11 @@
 #pragma once
 
-#pragma warning(push)
-#pragma warning( \
-    disable : 26812 26819 4081 4820 4514 26819 26495 5039 4668 4365 4820 4710)
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <bass.h>
 
 #include <iostream>
 #include <vector>
-#pragma warning(pop)
 
 class game {
  public:

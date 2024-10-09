@@ -33,12 +33,18 @@
     <ClCompile Include="chartParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="conductor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="chartParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="conductor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

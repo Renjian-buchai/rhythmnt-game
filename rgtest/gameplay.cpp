@@ -1,9 +1,10 @@
 #include <array>
 
 #include "chartParser.h"
+#include "conductor.h"
 #include "game.h"
 
-inline const uint8_t blockCount = 16; 
+inline const uint8_t blockCount = 14;
 
 void game::update() {
   double aspectRatio =
@@ -13,6 +14,9 @@ void game::update() {
   gameplayScreen.w = aspectRatio * 10 > 16 ? screen.h * 16 / 10 : screen.w;
   gameplayScreen.x = (screen.w - gameplayScreen.w) / 2;
   gameplayScreen.y = (screen.h - gameplayScreen.h) / 2;
+
+  SDL_DisplayMode display;
+  SDL_GetWindowDisplayMode(mainWindow, &display);
 
   const static std::array<SDL_Colour, 4> colours{
       SDL_Colour{0xac, 0xa9, 0xbb, SDL_ALPHA_OPAQUE},
@@ -34,9 +38,19 @@ void game::update() {
                gameplayScreen.h}};
 
   SDL_Rect note{lanes[0].x + blockWidth / 100, 0, blockWidth * 98 / 100,
-                screen.h / 20};
+                gameplayScreen.h / 20};
 
-  int step = screen.h / this->noteSpeed;
+  int step = gameplayScreen.h / this->noteSpeed;
+
+  static HSTREAM song =
+      BASS_StreamCreateFile(0, "./Charts/test/test.ogg", 0, 0,
+                            BASS_MUSIC_PRESCAN | BASS_MUSIC_AUTOFREE);
+
+  uint64_t timeStart = SDL_GetTicks64(), timeEnd;
+  // If deltaTime is greater than this, we're fucked anyways
+  uint16_t deltaTime;
+
+  conductor music(song);
 
   while (true) {
     SDL_RenderClear(mainWindowRenderer);
@@ -53,14 +67,13 @@ void game::update() {
 
     SDL_SetRenderDrawColor(mainWindowRenderer, 0xff, 0xff, 0xff,
                            SDL_ALPHA_OPAQUE);
-    for (uint8_t i = 1; i < blockCount ; ++i) {
-      SDL_RenderDrawLine(mainWindowRenderer, gameplayScreen.x + blockWidth * i, 0, gameplayScreen.x +  blockWidth * i,
+    for (uint8_t i = 1; i < blockCount; ++i) {
+      SDL_RenderDrawLine(mainWindowRenderer, gameplayScreen.x + blockWidth * i,
+                         0, gameplayScreen.x + blockWidth * i,
                          gameplayScreen.h);
     }
 
-    // SDL_SetRenderDrawColor(mainWindowRenderer, 0xff, 0xff, 0xff,
-    //                       SDL_ALPHA_OPAQUE);
-    // SDL_RenderFillRect(mainWindowRenderer, &note);
+    SDL_RenderFillRect(mainWindowRenderer, &note);
 
     SDL_RenderPresent(mainWindowRenderer);
 
@@ -76,7 +89,13 @@ void game::update() {
       }
     }
 
-    note.y += step;
+    music.Update();
+
+    timeEnd = SDL_GetTicks64();
+    deltaTime = static_cast<uint16_t>(timeEnd - timeStart);
+    timeStart = timeEnd;
+
+    note.y += step * deltaTime / 6;
   }
 
 stateChange:

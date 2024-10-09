@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="chartParser.cpp" />
+    <ClCompile Include="conductor.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gameplay.cpp" />
     <ClCompile Include="songSelect.cpp" />
@@ -161,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chartParser.h" />
+    <ClInclude Include="conductor.h" />
     <ClInclude Include="game.h" />
   </ItemGroup>
   <ItemGroup>

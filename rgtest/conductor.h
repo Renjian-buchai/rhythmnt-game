@@ -2,16 +2,19 @@
 
 #include <bass.h>
 
-struct conductor { 
-  double mixerTime = 0; 
-  double startTime = 0;
-  HSTREAM handle; 
+#include <cstdint>
 
-  conductor(HSTREAM handle); 
+struct conductor {
+  double mixerTime = 0;
+  double startTime = 0;
+  double currentTime = 0;
+  HSTREAM handle;
+
+  conductor(HSTREAM handle);
 
   void Update();
   void Pause();
   void Resume();
- 
-  double currentTime(); 
+
+  int64_t time();
 };

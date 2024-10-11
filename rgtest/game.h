@@ -13,7 +13,9 @@ class game {
 
   // Game logic
   gameState state = gameState::GAMEPLAY;
-  uint8_t noteSpeed = 100; 
+  uint8_t noteSpeed = 100;
+  double aspectRatio = 16 / 10;
+  SDL_Rect gameplayScreen;
 
   // SDL rendering, event handling
   const SDL_Rect screen;

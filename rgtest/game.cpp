@@ -38,6 +38,18 @@ game::game(SDL_Rect screen)
     std::exit(1);
   }
 
+  aspectRatio = static_cast<double>(screen.w) / static_cast<double>(screen.h);
+
+  if (aspectRatio * 10 > 16) {
+    gameplayScreen.h = screen.h;
+    gameplayScreen.w = static_cast<int>(screen.h * aspectRatio);
+  } else {
+    gameplayScreen.h = static_cast<int>(screen.w / aspectRatio);
+    gameplayScreen.w = screen.w;
+  }
+  gameplayScreen.x = (screen.w - gameplayScreen.w) / 2;
+  gameplayScreen.y = (screen.h - gameplayScreen.h) / 2;
+
   return;
 }
 
@@ -47,7 +59,7 @@ game::~game() {
   for (SDL_Texture* texture : textures) {
     SDL_DestroyTexture(texture);
   }
-  TTF_CloseFont(font); 
+  TTF_CloseFont(font);
 
   return;
 }

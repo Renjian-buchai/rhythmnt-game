@@ -6,14 +6,19 @@
 
 bool operator<(noteObject&& a, noteObject&& b) {
   bool ret;
-  std::visit([&](auto&& thing1, 
+  std::visit([&](auto&& thing1,
                  auto&& thing2) { ret = thing1.timing < thing2.timing; },
              a, b);
-
   return ret;
 }
 
-std::vector<noteObject> parse(std::string chartFile) {
+// TODO update parser
+
+void parse(std::string chartFile,
+ std::vector<noteObject>& Lane1,
+           std::vector<noteObject>& Lane2,
+ std::vector<noteObject>& Lane3,
+           std::vector<noteObject>& Lane4, std::vector<timer>& timePoints, std::vector<movement>& movements) {
   std::vector<noteObject> noteObjects;
 
   std::ifstream input(chartFile);
@@ -29,48 +34,74 @@ std::vector<noteObject> parse(std::string chartFile) {
     inputStream >> buffer;
     switch (buffer[0]) {
       case 'N': {
-        note note(0, 0);
-        // Lane
-        inputStream >> buffer;
-        // Assuming input is valid, only the first character is important
-        note.lane = buffer[0] - 48;
-        if (note.lane > 4) {
-          throw "Wtf";
-        }
-
         // Timing
         inputStream >> buffer;
-        if (buffer.back() != ';') {
-          throw "Wtf";
-        }
-        note.timing = std::stoull(buffer);
+        note note(std::stoull(buffer));
 
-        noteObjects.push_back(note);
+        inputStream >> buffer;
+        if (buffer.back() != ';') {
+          throw "lineTerminationError";
+        }
+        switch (buffer[0] - 48) {
+          case 1:
+            Lane1.push_back(note);
+            break;
+
+          case 2:
+            Lane2.push_back(note);
+            break;
+
+          case 3:
+            Lane3.push_back(note);
+            break;
+
+          case 4:
+            Lane4.push_back(note);
+            break;
+
+          default:
+            throw "noteLaneError";
+            break;
+        }
         break;
       }
 
       case 'L': {
         longNote ln;
-        // Lane
-        inputStream >> buffer;
-        ln.lane = buffer[0] - 48;
-        if (ln.lane > 4) {
-          throw "Wtf 2";
-        }
-
         // Timing
         inputStream >> buffer;
         ln.timing = std::stoull(buffer);
 
         // DeltaTime
         inputStream >> buffer;
+        std::cout << buffer;
+        ln.deltaTime = std::stoull(buffer);
+
+        inputStream >> buffer;
         if (buffer.back() != ';') {
           throw "Wtf";
         }
-        buffer.pop_back();
-        ln.deltaTime = std::stoull(buffer);
+        switch (buffer[0] - 48) {
+          case 1:
+            Lane1.push_back(ln);
+            break;
 
-        noteObjects.push_back(ln);
+          case 2:
+            Lane2.push_back(ln);
+            break;
+
+          case 3:
+            Lane3.push_back(ln);
+            break;
+
+          case 4:
+            Lane4.push_back(ln);
+            break;
+
+          default:
+            throw "Wtf 2";
+            break;
+        }
         break;
       }
 
@@ -85,22 +116,26 @@ std::vector<noteObject> parse(std::string chartFile) {
     }
   }
 
-  std::sort(noteObjects.begin(), noteObjects.end(),
-            [](noteObject& a, noteObject& b) { return a < b; });
+  input.close();
 
-  return noteObjects;
+  auto cmp = [](noteObject& a, noteObject& b) { return a < b; };
+
+  std::sort(Lane1.begin(), Lane1.end(), cmp);
+  std::sort(Lane2.begin(), Lane2.end(), cmp);
+  std::sort(Lane3.begin(), Lane3.end(), cmp);
+  std::sort(Lane4.begin(), Lane4.end(), cmp);
+  std::sort(timePoints.begin(), timePoints.end(),
+            [](timer& a, timer& b) { return a.timing < b.timing; });
+  std::sort(movements.begin(), movements.end(),
+            [](movement& a, movement& b) { return a.timing < b.timing; });
 }
 
-note::note(uint8_t _lane, uint64_t _timing) : lane(_lane), timing(_timing) {}
+note::note(int64_t _timing) : timing(_timing) {}
 
-longNote::longNote(uint8_t _lane, uint64_t _timing, uint64_t _deltaTime)
-    : lane(_lane), timing(_timing), deltaTime(_deltaTime) {}
+longNote::longNote(int64_t _timing, int64_t _deltaTime)
+    : timing(_timing), deltaTime(_deltaTime) {}
 
-timer::timer(uint32_t _bpm, uint64_t _timing) : bpm(_bpm), timing(_timing) {}
+timer::timer(uint32_t _bpm, int64_t _timing) : bpm(_bpm), timing(_timing) {}
 
-movement::movement(uint8_t _lane, uint8_t _position, uint64_t _timing,
-                   uint64_t _deltaTime)
-    : lane(_lane),
-      position(_position),
-      timing(_timing),
-      deltaTime(_deltaTime) {}
+movement::movement(uint8_t _position, int64_t _timing, int64_t _deltaTime, uint8_t _lane)
+    : position(_position), timing(_timing), deltaTime(_deltaTime), lane(_lane) {}

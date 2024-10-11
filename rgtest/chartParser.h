@@ -6,40 +6,42 @@
 #include <vector>
 
 struct note {
-  uint64_t timing = -1;
-  uint8_t lane = -1;
+  int64_t timing = -1;
 
-  note(uint8_t lane, uint64_t timing);
-  note() = default; 
+  note(int64_t timing);
+  note() = default;
 };
 
 struct longNote {
-  uint64_t timing = -1;
-  uint64_t deltaTime = -1;
-  uint8_t lane = -1;
+  int64_t timing = -1;
+  int64_t deltaTime = -1;
 
-  longNote(uint8_t lane, uint64_t timing, uint64_t deltaTime);
-  longNote() = default; 
+  longNote(int64_t timing, int64_t deltaTime);
+  longNote() = default;
 };
 
 struct timer {
-  uint64_t timing = -1;
+  int64_t timing = -1;
   uint32_t bpm = -1;
-  
-  timer(uint32_t bpm, uint64_t timing);
-  timer() = default; 
+
+  timer(uint32_t bpm, int64_t timing);
+  timer() = default;
 };
 
 struct movement {
-  uint64_t timing = -1;
-  uint64_t deltaTime = -1;
-  uint8_t lane = -1;
+  int64_t timing = -1;
+  int64_t deltaTime = -1;
   uint8_t position = -1;
+  uint8_t lane = -1; 
 
-  movement(uint8_t lane, uint8_t position, uint64_t timing, uint64_t deltaTime); 
-  movement() = default; 
+  movement(uint8_t position, int64_t timing, int64_t deltaTime, uint8_t lane);
+  movement() = default;
 };
 
-using noteObject = std::variant<note, longNote, timer, movement>;
+using noteObject = std::variant<note, longNote, movement>;
 
-std::vector<noteObject> parse(std::string chartFile);
+void parse(std::string chartFile,
+ std::vector<noteObject>& Lane1,
+           std::vector<noteObject>& Lane2,
+ std::vector<noteObject>& Lane3,
+           std::vector<noteObject>& Lane4, std::vector<timer>& timePoints, std::vector<movement>& movements);

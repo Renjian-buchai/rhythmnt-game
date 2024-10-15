@@ -162,6 +162,7 @@
     <ClCompile Include="conductor.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gameplay.cpp" />
+    <ClCompile Include="lanes.cpp" />
     <ClCompile Include="songSelect.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
@@ -169,6 +170,7 @@
     <ClInclude Include="chartParser.h" />
     <ClInclude Include="conductor.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="lanes.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Charts\test\test.sl" />

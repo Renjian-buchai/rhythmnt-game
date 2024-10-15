@@ -8,6 +8,15 @@
 
 inline constexpr uint8_t blockCount = 14;
 
+void aoeu(SDL_Renderer* renderer, lanes lanes) {
+  for (uint8_t i = 0; i < 4; ++i) {
+    SDL_SetRenderDrawColor(renderer, lanes.laneColours[i].r,
+                           lanes.laneColours[i].g, lanes.laneColours[i].b,
+                           lanes.laneColours[i].a);
+    SDL_RenderFillRect(renderer, &lanes.positions[i]);
+  }
+}
+
 void game::update() {
   // Game logic initialisation
   uint16_t refreshRate;
@@ -57,25 +66,16 @@ void game::update() {
   SDL_Rect note{gameplayScreen.x + blockWidth * 2, spawnLocation, blockWidth,
                 blockWidth / 3};
 
-  uint8_t r, g, b, a;
-
   while (true) {
     /* Rendering */ {
+      SDL_SetRenderDrawColor(mainWindowRenderer, 0xff, 0x00, 0x00, 0xff); 
       SDL_RenderClear(mainWindowRenderer);
       SDL_SetRenderDrawColor(mainWindowRenderer, backgroundColour.r,
                              backgroundColour.g, backgroundColour.b,
                              backgroundColour.a);
       SDL_RenderFillRect(mainWindowRenderer, &screen);
 
-
-#if 1
-				for (uint8_t i = 0; i < 4; ++i) {
-        SDL_SetRenderDrawColor(mainWindowRenderer, lanes.laneColours[i].r,
-                               lanes.laneColours[i].g, lanes.laneColours[i].b,
-                               lanes.laneColours[i].a);
-        SDL_RenderFillRect(mainWindowRenderer, &lanes.positions[i]);
-      }
-#endif  // 0
+      lanes.render(mainWindowRenderer);
 
       SDL_SetRenderDrawColor(mainWindowRenderer, 0xff, 0xff, 0xff,
                              SDL_ALPHA_OPAQUE);

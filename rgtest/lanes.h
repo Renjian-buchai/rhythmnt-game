@@ -39,11 +39,10 @@ struct lanes {
 
   void render(SDL_Renderer* renderer) const {
     for (int i = 0; i < 4; ++i) {
-      SDL_SetRenderDrawColor(renderer, laneColours[i].r, laneColours[i].g,
-                             laneColours[i].b, laneColours[i].a);
-      SDL_RenderDrawRect(renderer, &(this->positions[i]));
-
-      std::cout << SDL_GetError();
+      SDL_SetRenderDrawColor(renderer, this->laneColours[i].r,
+                             this->laneColours[i].g, this->laneColours[i].b,
+                             this->laneColours[i].a);
+      SDL_RenderFillRect(renderer, &(this->positions[i]));
     }
   }
 };

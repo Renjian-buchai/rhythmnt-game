@@ -17,32 +17,7 @@ struct lanes {
   std::vector<movement> movementGroups;
   std::array<SDL_Rect, 4> positions;
 
-  lanes(std::string chartfile, SDL_Rect gameplayScreen, const int blockWidth)
-      : laneColours({SDL_Colour{0xac, 0xa9, 0xbb, SDL_ALPHA_OPAQUE},
-                     SDL_Colour{0x77, 0x75, 0x86, SDL_ALPHA_OPAQUE},
-                     SDL_Colour{0x34, 0x18, 0x18, SDL_ALPHA_OPAQUE},
-                     SDL_Colour{0x64, 0x44, 0x42, SDL_ALPHA_OPAQUE}}),
-        laneQueues({}),
-        positions({SDL_Rect{gameplayScreen.x + blockWidth * 2, 0, blockWidth,
-                            gameplayScreen.h},
-                   SDL_Rect{gameplayScreen.x + blockWidth * 3, 0, blockWidth,
-                            gameplayScreen.h},
-                   SDL_Rect{gameplayScreen.x + blockWidth * 4, 0, blockWidth,
-                            gameplayScreen.h},
-                   SDL_Rect{gameplayScreen.x + blockWidth * 5, 0, blockWidth,
-                            gameplayScreen.h}}) {
-    parse(chartfile, laneTimings[0], laneTimings[1], laneTimings[2],
-          laneTimings[3], timingGroups, movementGroups);
+  lanes(std::string chartfile, SDL_Rect gameplayScreen, const int blockWidth);
 
-    std::cout << "\n" << gameplayScreen.x + blockWidth * 2 << " " << blockWidth;
-  }
-
-  void render(SDL_Renderer* renderer) const {
-    for (int i = 0; i < 4; ++i) {
-      SDL_SetRenderDrawColor(renderer, this->laneColours[i].r,
-                             this->laneColours[i].g, this->laneColours[i].b,
-                             this->laneColours[i].a);
-      SDL_RenderFillRect(renderer, &(this->positions[i]));
-    }
-  }
+  void render(SDL_Renderer* renderer) const;
 };

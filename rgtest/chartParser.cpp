@@ -74,7 +74,6 @@ void parse(std::string chartFile,
 
         // DeltaTime
         inputStream >> buffer;
-        std::cout << buffer;
         ln.deltaTime = std::stoull(buffer);
 
         inputStream >> buffer;

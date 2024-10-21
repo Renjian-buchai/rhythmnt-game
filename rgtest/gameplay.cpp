@@ -8,15 +8,6 @@
 
 inline constexpr uint8_t blockCount = 14;
 
-void aoeu(SDL_Renderer* renderer, lanes lanes) {
-  for (uint8_t i = 0; i < 4; ++i) {
-    SDL_SetRenderDrawColor(renderer, lanes.laneColours[i].r,
-                           lanes.laneColours[i].g, lanes.laneColours[i].b,
-                           lanes.laneColours[i].a);
-    SDL_RenderFillRect(renderer, &lanes.positions[i]);
-  }
-}
-
 void game::update() {
   // Game logic initialisation
   uint16_t refreshRate;
@@ -117,9 +108,6 @@ void game::update() {
     music.Update();
 
     musicTimeEnd = music.time();
-#if 0
-				std::cout << musicTimeEnd;
-#endif  // 0
 
     if (lane1NextTime > musicTimeStart && lane1NextTime < musicTimeEnd &&
         lane1Next != lanes.laneTimings[0].end()) {
@@ -144,17 +132,6 @@ void game::update() {
         ++i;
       }
     }
-
-#if 0  // To check time from top to bottom 
-    if (note.y > gameplayScreen.h) {
-      note.y = spawnLocation;
-      static uint64_t restartTime = 0;
-      static uint64_t lastRestartTime = restartTime;
-      restartTime = SDL_GetTicks64();
-
-      std::cout << restartTime - lastRestartTime << " " << restartTime << "\n";
-    }
-#endif
   }
 
 stateChange:

@@ -14,19 +14,19 @@ int main(int argc [[maybe_unused]], char** argv [[maybe_unused]]) {
     std::cout << SDL_GetError();
     return err;
   }
-  atexit(SDL_Quit); 
+  atexit(SDL_Quit);
 
   if (!BASS_Init(-1, 22050, BASS_DEVICE_STEREO, 0, NULL)) {
     std::cout << BASS_ErrorGetCode();
     return BASS_ErrorGetCode();
   }
-  atexit(reinterpret_cast<void(__cdecl*)()>(BASS_Free)); 
+  atexit(reinterpret_cast<void(__cdecl*)()>(BASS_Free));
 
   if (int err = TTF_Init()) {
     std::cout << TTF_GetError();
     return err;
   }
-  atexit(TTF_Quit); 
+  atexit(TTF_Quit);
 
   SDL_Rect screen;
   if (int err = SDL_GetDisplayBounds(0, &screen)) {
@@ -40,21 +40,21 @@ int main(int argc [[maybe_unused]], char** argv [[maybe_unused]]) {
 
   while (true) {
     switch (rg.state) {
-      case game::gameState::SONGSELECT: 
+      case game::gameState::SONGSELECT:
         rg.songSelect();
-        break; 
+        break;
 
-      case game::gameState::GAMEPLAY: 
+      case game::gameState::GAMEPLAY:
         rg.update();
-        break; 
+        break;
 
-      case game::gameState::PAUSE: 
-        break; 
+      case game::gameState::PAUSE:
+        break;
 
-      case game::gameState::QUIT: 
-        exit(0); 
+      case game::gameState::QUIT:
+        exit(0);
 
-      default: 
+      default:
         break;
     }
   }

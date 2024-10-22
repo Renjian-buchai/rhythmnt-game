@@ -1,5 +1,6 @@
-#include <SDL_opengl.h>
+#include <SDL.h>
 
+#include <algorithm>
 #include <array>
 
 #include "conductor.h"
@@ -31,9 +32,6 @@ void game::update() {
   // Next note info
   std::vector<SDL_Rect> lane1q;
   auto lane1Next = lanes.laneTimings[0].begin();
-  int64_t lane1NextTime =
-      std::visit([](auto&& nxt) -> int64_t { return nxt.timing; }, *lane1Next) -
-      1000;
 
   // Rendering
   SDL_Colour backgroundColour = {0x1f, 0x1e, 0x33, SDL_ALPHA_OPAQUE};
@@ -59,7 +57,7 @@ void game::update() {
 
   while (true) {
     /* Rendering */ {
-      SDL_SetRenderDrawColor(mainWindowRenderer, 0xff, 0x00, 0x00, 0xff); 
+      SDL_SetRenderDrawColor(mainWindowRenderer, 0xff, 0x00, 0x00, 0xff);
       SDL_RenderClear(mainWindowRenderer);
       SDL_SetRenderDrawColor(mainWindowRenderer, backgroundColour.r,
                              backgroundColour.g, backgroundColour.b,
@@ -92,7 +90,7 @@ void game::update() {
     while (SDL_PollEvent(&event)) {
       switch (event.type) {
         case SDL_QUIT:
-          this->state = gameState::QUIT;
+          state = gameState::QUIT;
           goto stateChange;
 
         default:
@@ -109,7 +107,8 @@ void game::update() {
 
     musicTimeEnd = music.time();
 
-    if (lane1NextTime > musicTimeStart && lane1NextTime < musicTimeEnd &&
+    if (lanes.nextSpawn[1] > musicTimeStart &&
+        lanes.nextSpawn[1] < musicTimeEnd &&
         lane1Next != lanes.laneTimings[0].end()) {
       lane1q.push_back(SDL_Rect{gameplayScreen.x + blockWidth * 2,
                                 spawnLocation, blockWidth, blockWidth / 3});
@@ -117,7 +116,7 @@ void game::update() {
       if (lane1Next == lanes.laneTimings[0].end()) {
         continue;
       }
-      lane1NextTime =
+      lanes.nextSpawn[1] =
           std::visit([](auto&& nxt) -> uint64_t { return nxt.timing; },
                      *lane1Next) -
           1000;

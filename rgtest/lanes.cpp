@@ -14,9 +14,23 @@ lanes::lanes(std::string chartfile, SDL_Rect gameplayScreen,
                  SDL_Rect{gameplayScreen.x + blockWidth * 4, 0, blockWidth,
                           gameplayScreen.h},
                  SDL_Rect{gameplayScreen.x + blockWidth * 5, 0, blockWidth,
-                          gameplayScreen.h}}) {
+                          gameplayScreen.h}}),
+      nextSpawn({-1}) {
   parse(chartfile, laneTimings[0], laneTimings[1], laneTimings[2],
         laneTimings[3], timingGroups, movementGroups);
+
+  for (auto it = laneTimings.begin(); it != laneTimings.end(); ++it) {
+    // What is this atrocity
+    nextSpawn[it - laneTimings.begin()] =
+        it->size() != 0
+            ? std::visit([](auto&& nxt) -> int64_t { return nxt.timing; },
+                         it->front()) -
+                  1000
+            // Very safe to say that these notes will never be spawned
+            : -1000000;
+  }
+
+  return;
 }
 
 void lanes::render(SDL_Renderer* renderer) const {

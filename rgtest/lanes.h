@@ -17,7 +17,8 @@ struct lanes {
   std::array<SDL_Rect, 4> positions;
 
   // Logic
-  std::array<int64_t, 4> nextSpawn; 
+  std::array<std::vector<noteObject>::iterator, 4> nextNote;
+  std::array<int64_t, 4> nextSpawnTiming;
 
   lanes(std::string chartfile, SDL_Rect gameplayScreen, const int blockWidth);
 

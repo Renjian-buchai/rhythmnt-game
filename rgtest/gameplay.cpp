@@ -31,7 +31,6 @@ void game::update() {
 
   // Next note info
   std::vector<SDL_Rect> lane1q;
-  auto lane1Next = lanes.laneTimings[0].begin();
 
   // Rendering
   SDL_Colour backgroundColour = {0x1f, 0x1e, 0x33, SDL_ALPHA_OPAQUE};
@@ -107,18 +106,18 @@ void game::update() {
 
     musicTimeEnd = music.time();
 
-    if (lanes.nextSpawn[1] > musicTimeStart &&
-        lanes.nextSpawn[1] < musicTimeEnd &&
-        lane1Next != lanes.laneTimings[0].end()) {
+    if (lanes.nextSpawnTiming[0] > musicTimeStart &&
+        lanes.nextSpawnTiming[0] < musicTimeEnd &&
+        lanes.nextNote[0] != lanes.laneTimings[0].end()) {
       lane1q.push_back(SDL_Rect{gameplayScreen.x + blockWidth * 2,
                                 spawnLocation, blockWidth, blockWidth / 3});
-      ++lane1Next;
-      if (lane1Next == lanes.laneTimings[0].end()) {
+      ++lanes.nextNote[0];
+      if (lanes.nextNote[0] == lanes.laneTimings[0].end()) {
         continue;
       }
-      lanes.nextSpawn[1] =
+      lanes.nextSpawnTiming[0] =
           std::visit([](auto&& nxt) -> uint64_t { return nxt.timing; },
-                     *lane1Next) -
+                     *lanes.nextNote[0]) -
           1000;
     }
     musicTimeStart = musicTimeEnd;

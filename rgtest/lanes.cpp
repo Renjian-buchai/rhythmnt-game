@@ -15,19 +15,24 @@ lanes::lanes(std::string chartfile, SDL_Rect gameplayScreen,
                           gameplayScreen.h},
                  SDL_Rect{gameplayScreen.x + blockWidth * 5, 0, blockWidth,
                           gameplayScreen.h}}),
-      nextSpawn({-1}) {
+      nextSpawnTiming({-1}),
+      nextNote() {
   parse(chartfile, laneTimings[0], laneTimings[1], laneTimings[2],
         laneTimings[3], timingGroups, movementGroups);
 
   for (auto it = laneTimings.begin(); it != laneTimings.end(); ++it) {
+    size_t index = it - laneTimings.begin();
+
     // What is this atrocity
-    nextSpawn[it - laneTimings.begin()] =
+    nextSpawnTiming[index] =
         it->size() != 0
             ? std::visit([](auto&& nxt) -> int64_t { return nxt.timing; },
                          it->front()) -
                   1000
             // Very safe to say that these notes will never be spawned
             : -1000000;
+
+    nextNote[index] = it->begin();
   }
 
   return;

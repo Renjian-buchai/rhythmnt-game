@@ -3,9 +3,9 @@
 #include <algorithm>
 #include <array>
 
-#include "conductor.h"
-#include "game.h"
-#include "lanes.h"
+#include "../../include/game.h"
+#include "../../include/gameplay/conductor.h"
+#include "../../include/gameplay/lanes.h"
 
 inline constexpr uint8_t blockCount = 14;
 
@@ -107,7 +107,8 @@ void game::update() {
         lanes.nextSpawnTiming[0] < musicTimeEnd &&
         lanes.nextNote[0] != lanes.laneTimings[0].end()) {
       lanes.laneQueues[0].push_back(SDL_Rect{gameplayScreen.x + blockWidth * 2,
-                                spawnLocation, blockWidth, blockWidth / 3});
+                                             spawnLocation, blockWidth,
+                                             blockWidth / 3});
       ++lanes.nextNote[0];
       if (lanes.nextNote[0] == lanes.laneTimings[0].end()) {
         continue;

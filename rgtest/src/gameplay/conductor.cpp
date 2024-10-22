@@ -1,4 +1,4 @@
-#include "conductor.h"
+#include "../../include/gameplay/conductor.h"
 
 #include <iostream>
 

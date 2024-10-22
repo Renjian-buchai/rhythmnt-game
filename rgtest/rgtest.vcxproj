@@ -158,26 +158,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="chartParser.cpp" />
-    <ClCompile Include="conductor.cpp" />
-    <ClCompile Include="game.cpp" />
-    <ClCompile Include="gameplay.cpp" />
-    <ClCompile Include="lanes.cpp" />
-    <ClCompile Include="songSelect.cpp" />
-    <ClCompile Include="Source.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="chartParser.h" />
-    <ClInclude Include="conductor.h" />
-    <ClInclude Include="game.h" />
-    <ClInclude Include="lanes.h" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Charts\test\test.sl" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\FiraCode-Regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\game.h" />
+    <ClInclude Include="include\gameplay\chartParser.h" />
+    <ClInclude Include="include\gameplay\conductor.h" />
+    <ClInclude Include="include\gameplay\lanes.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\game.cpp" />
+    <ClCompile Include="src\gameplay\chartParser.cpp" />
+    <ClCompile Include="src\gameplay\conductor.cpp" />
+    <ClCompile Include="src\gameplay\gameplay.cpp" />
+    <ClCompile Include="src\gameplay\lanes.cpp" />
+    <ClCompile Include="src\songSelect.cpp" />
+    <ClCompile Include="src\Source.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

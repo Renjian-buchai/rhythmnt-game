@@ -1,4 +1,4 @@
-#include "lanes.h"
+#include "../../include/gameplay/lanes.h"
 
 lanes::lanes(std::string chartfile, SDL_Rect gameplayScreen,
              const int blockWidth)

@@ -1,4 +1,4 @@
-#include "game.h"
+#include "../../include/game.h"
 
 game::game(SDL_Rect screen)
     : state(gameState::GAMEPLAY),

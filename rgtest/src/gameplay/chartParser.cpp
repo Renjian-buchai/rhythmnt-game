@@ -1,4 +1,4 @@
-#include "chartParser.h"
+#include "../../include/gameplay/chartParser.h"
 
 #include <algorithm>
 #include <iostream>

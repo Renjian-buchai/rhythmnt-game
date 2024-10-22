@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-#include "game.h"
+#include "../../include/game.h"
 
 SDL_Window* mainWindow = nullptr;
 SDL_Renderer* mainWindowRenderer;

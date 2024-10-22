@@ -1,4 +1,4 @@
-#include "game.h"
+#include "../../include/game.h"
 
 void game::songSelect() {
   SDL_Rect songListRect = {2, 2, screen.w / 3, screen.h / 10};

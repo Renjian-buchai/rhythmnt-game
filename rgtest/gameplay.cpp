@@ -29,9 +29,6 @@ void game::update() {
   // Initialising lanes
   lanes lanes("./Charts/test/test.sl", gameplayScreen, blockWidth);
 
-  // Next note info
-  std::vector<SDL_Rect> lane1q;
-
   // Rendering
   SDL_Colour backgroundColour = {0x1f, 0x1e, 0x33, SDL_ALPHA_OPAQUE};
 
@@ -78,8 +75,8 @@ void game::update() {
                          gameplayScreen.x + (blockCount - 1) * blockWidth,
                          gameplayScreen.h - blockWidth);
 
-      for (size_t i = 0; i < lane1q.size(); ++i) {
-        SDL_RenderFillRect(mainWindowRenderer, &(lane1q[i]));
+      for (size_t i = 0; i < lanes.laneQueues[0].size(); ++i) {
+        SDL_RenderFillRect(mainWindowRenderer, &(lanes.laneQueues[0][i]));
       }
 
       SDL_RenderPresent(mainWindowRenderer);
@@ -109,7 +106,7 @@ void game::update() {
     if (lanes.nextSpawnTiming[0] > musicTimeStart &&
         lanes.nextSpawnTiming[0] < musicTimeEnd &&
         lanes.nextNote[0] != lanes.laneTimings[0].end()) {
-      lane1q.push_back(SDL_Rect{gameplayScreen.x + blockWidth * 2,
+      lanes.laneQueues[0].push_back(SDL_Rect{gameplayScreen.x + blockWidth * 2,
                                 spawnLocation, blockWidth, blockWidth / 3});
       ++lanes.nextNote[0];
       if (lanes.nextNote[0] == lanes.laneTimings[0].end()) {
@@ -122,10 +119,10 @@ void game::update() {
     }
     musicTimeStart = musicTimeEnd;
 
-    for (size_t i = 0; i < lane1q.size();) {
-      lane1q[i].y += gameplayScreen.h / noteSpeed * deltaTime / 6;
-      if (lane1q[i].y >= gameplayScreen.h) {
-        lane1q.erase(lane1q.begin() + i);
+    for (size_t i = 0; i < lanes.laneQueues[0].size();) {
+      lanes.laneQueues[0][i].y += gameplayScreen.h / noteSpeed * deltaTime / 6;
+      if (lanes.laneQueues[0][i].y >= gameplayScreen.h) {
+        lanes.laneQueues[0].erase(lanes.laneQueues[0].begin() + i);
       } else {
         ++i;
       }

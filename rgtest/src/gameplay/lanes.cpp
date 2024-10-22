@@ -46,3 +46,24 @@ void lanes::render(SDL_Renderer* renderer) const {
     SDL_RenderFillRect(renderer, &(this->positions[i]));
   }
 }
+
+void lanes::spawn(int64_t musicTimeStart, int64_t musicTimeCurrent,
+                  int spawnLocation, SDL_Rect& screen) {
+  if (this->nextSpawnTiming[0] > musicTimeStart &&
+      this->nextSpawnTiming[0] < musicTimeCurrent &&
+      this->nextNote[0] != this->laneTimings[0].end()) {
+    this->laneQueues[0].push_back(SDL_Rect{positions[0].x, spawnLocation,
+                                           positions[0].w, positions[0].w / 3});
+
+    ++this->nextNote[0];
+
+    if (this->nextNote[0] != this->laneTimings[0].end()) {
+      this->nextSpawnTiming[0] =
+          std::visit([](auto&& nxt) -> uint64_t { return nxt.timing; },
+                     *this->nextNote[0]) -
+          1000;
+    }
+  }
+
+  return;
+}

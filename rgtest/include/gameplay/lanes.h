@@ -23,4 +23,6 @@ struct lanes {
   lanes(std::string chartfile, SDL_Rect gameplayScreen, const int blockWidth);
 
   void render(SDL_Renderer* renderer) const;
+  void spawn(int64_t musicTimeStart, int64_t musicTimeCurrent,
+             int spawnLocation, SDL_Rect& screen);
 };

@@ -47,21 +47,24 @@ void lanes::render(SDL_Renderer* renderer) const {
   }
 }
 
+#include <iostream>
+
 void lanes::spawn(int64_t musicTimeStart, int64_t musicTimeCurrent,
                   int spawnLocation, SDL_Rect& screen) {
-  if (this->nextSpawnTiming[0] > musicTimeStart &&
-      this->nextSpawnTiming[0] < musicTimeCurrent &&
-      this->nextNote[0] != this->laneTimings[0].end()) {
-    this->laneQueues[0].push_back(SDL_Rect{positions[0].x, spawnLocation,
-                                           positions[0].w, positions[0].w / 3});
+  for (uint8_t i = 0; i < 4; ++i) {
+    if (this->nextSpawnTiming[i] > musicTimeStart &&
+        this->nextSpawnTiming[i] < musicTimeCurrent &&
+        this->nextNote[i] != this->laneTimings[i].end()) {
+      this->laneQueues[i].push_back(SDL_Rect{
+          positions[i].x, spawnLocation, positions[i].w, positions[i].w / 3});
+      ++this->nextNote[i];
 
-    ++this->nextNote[0];
-
-    if (this->nextNote[0] != this->laneTimings[0].end()) {
-      this->nextSpawnTiming[0] =
-          std::visit([](auto&& nxt) -> uint64_t { return nxt.timing; },
-                     *this->nextNote[0]) -
-          1000;
+      if (this->nextNote[i] != this->laneTimings[i].end()) {
+        this->nextSpawnTiming[i] =
+            std::visit([](auto&& nxt) -> uint64_t { return nxt.timing; },
+                       *this->nextNote[i]) -
+            1000;
+      }
     }
   }
 
